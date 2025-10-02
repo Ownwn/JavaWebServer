@@ -1,4 +1,4 @@
-package server_files;
+package server;
 
 public record Response(int status, String body) {
     public static Response of(int status, String body) {

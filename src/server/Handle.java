@@ -1,4 +1,4 @@
-package server_files;
+package server;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface Handle {
     String value();
+
     HttpMethod method() default HttpMethod.GET;
+
     boolean requiresAuth() default true;
 }

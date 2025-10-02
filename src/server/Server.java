@@ -1,11 +1,9 @@
-package server_files;
+package server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import ownwn.FirstHandler;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.util.Map;
 
@@ -60,14 +58,14 @@ public class Server {
         Request request = Request.createFromExchange(exchange);
         Response response = handler.handle(request);
 
-       exchange.sendResponseHeaders(response.status(), response.body().length());
-       exchange.getResponseBody().write(response.body().getBytes());
-       exchange.getResponseBody().close();
+        exchange.sendResponseHeaders(response.status(), response.body().length());
+        exchange.getResponseBody().write(response.body().getBytes());
+        exchange.getResponseBody().close();
     }
 
     private String cleanUrl(String url) {
         if (url.startsWith("/")) url = url.substring(1);
-        if (url.endsWith("/")) url = url.substring(0, url.length()-1);
+        if (url.endsWith("/")) url = url.substring(0, url.length() - 1);
         return url;
     }
 }

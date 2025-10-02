@@ -1,11 +1,13 @@
-package server_files;
+package server;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 interface RequestHandler {
     Response handle(Request request);
+
     HttpMethod method();
+
     boolean requiresAuth();
 
 

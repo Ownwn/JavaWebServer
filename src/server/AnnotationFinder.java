@@ -1,13 +1,13 @@
-package server_files;
+package server;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
 public class AnnotationFinder {
-    public static Map<String, RequestHandler> getAllAnnotatedMethods(String packageName) {
+    private AnnotationFinder() {}
+
+    static Map<String, RequestHandler> getAllAnnotatedMethods(String packageName) {
         Map<String, RequestHandler> map = new HashMap<>();
 
         try {

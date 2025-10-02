@@ -1,16 +1,16 @@
-package ownwn;
+package example;
 
-import server_files.Handle;
-import server_files.HttpMethod;
-import server_files.Request;
-import server_files.Response;
+import server.Handle;
+import server.HttpMethod;
+import server.Request;
+import server.Response;
 
 public class FirstHandler {
 
-    @Handle("okie")
+    @Handle("testget")
     public static Response handle(Request request) {
-        System.out.println("Handling request...");
-        return Response.of("cool response");
+        System.out.println("Handling get request...");
+        return Response.of(200, "cool response");
     }
 
     @Handle(value = "testpost", method = HttpMethod.POST)

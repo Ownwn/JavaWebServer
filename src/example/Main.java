@@ -1,7 +1,6 @@
-package ownwn;
+package example;
 
-
-import server_files.Server;
+import server.Server;
 
 public class Main {
     public static void main() {
