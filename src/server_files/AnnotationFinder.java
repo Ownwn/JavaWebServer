@@ -1,12 +1,14 @@
-package ownwn;
+package server_files;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
 public class AnnotationFinder {
-    public static Map<String, HttpMethod> getAllAnnotatedMethods(String packageName) {
-        Map<String, HttpMethod> map = new HashMap<>();
+    public static Map<String, RequestHandler> getAllAnnotatedMethods(String packageName) {
+        Map<String, RequestHandler> map = new HashMap<>();
 
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -20,7 +22,7 @@ public class AnnotationFinder {
                 classes.addAll(findClasses(directory, packageName));
             }
 
-            classes.forEach(clazz -> grabMethods(clazz, map));
+            classes.forEach(clazz -> loadMethods(clazz, map));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -52,22 +54,16 @@ public class AnnotationFinder {
         return classes;
     }
 
-    private static void grabMethods(Class<?> clazz, Map<String, HttpMethod> map) {
+    private static void loadMethods(Class<?> clazz, Map<String, RequestHandler> map) {
         Arrays.stream(clazz.getDeclaredMethods())
-                .filter(m -> m.isAnnotationPresent(Anno.class))
-                .map(m -> new HttpMethod() {
-                    @Override
-                    public Handler handler() {
-                        return m::invoke;
-                    }
+                .filter(m -> m.isAnnotationPresent(Handle.class))
+                .forEach(m -> {
+                    Handle annotation = Objects.requireNonNull(m.getAnnotation(Handle.class));
+                    RequestHandler handler = RequestHandler.from(m, annotation);
+                    String path = annotation.value();
 
-                    @Override
-                    public String getPath() {
-                        return Objects.requireNonNull(m.getAnnotation(Anno.class).value());
-                    }
-                }).forEach(m -> {
-                    if (map.put(m.getPath(), m) != null) {
-                        throw new RuntimeException("Duplicate paths " + m.getPath());
+                    if (map.put(path, handler) != null) {
+                        throw new RuntimeException("Duplicate paths " + path);
                     }
                 });
     }

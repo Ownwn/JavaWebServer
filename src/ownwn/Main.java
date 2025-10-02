@@ -1,10 +1,10 @@
-import ownwn.Server;
+package ownwn;
 
-void main() {
-    IO.println("hey!");
-    try {
-        new Server();
-    } catch (IOException e) {
-        throw new RuntimeException(e);
+
+import server_files.Server;
+
+public class Main {
+    public static void main() {
+        Server.create(8080);
     }
 }
